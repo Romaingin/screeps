@@ -1,5 +1,7 @@
+var utils = require('utils')
+
 var sourceFinder = {
-	run: function(creep, searchForDrops=true) {
+	run: function (creep, searchForDrops=true) {
 		// Update the target
 		var dropped = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY)
 		if (dropped) {
@@ -8,13 +10,15 @@ var sourceFinder = {
 			creep.memory.droppedId = undefined
 		}
 
-		var target = Game.getObjectById(creep.memory.targetId)
-		// If empty, find another if reached before ticks
-		if (target.energy == 0) {
+		var target = utils.findClosestSourceForRole(creep.memory.role, creep.pos.roomName)
+		if (target.energy > 0) {
+			creep.memory.targetId = target.id
+		} else {
+			// Empty, find another if reached before ticks
 			var newSource = creep.pos.findClosestByRange(FIND_SOURCES, {
 				filter: (source) => {
-                    return (source.id != target.id);
-                }
+					return (source.id != target.id);
+				}
 			})
 			if (creep.pos.getRangeTo(newSource) < target.ticksToRegeneration) {
 				target = newSource

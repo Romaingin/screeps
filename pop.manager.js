@@ -9,13 +9,13 @@ var c = { work: BODYPART_COST[WORK],
 
 // Distribution of roles
 roleCountReach = {
-	'harvester': 4,
+	'harvester': 6,
 	'builder': 2,
 	'upgrader': 6,
 	'warrior': 6,
 }
 
-var popManage = {
+var popManager = {
 	run: function (roleCountState) {
 		// Convert to proportions, determin the lower
 		var smallestProp = 10,
@@ -35,7 +35,7 @@ var popManage = {
 			var availableEnergy = utils.getAvailableEnergy("ColonyCenter") - c[MOVE]
 
 			// Decide above what energy amount it should be spawned
-			var acceptableEnergy = 0.9 *
+			var acceptableEnergy = 0.85 *
 				(utils.getExtensions(Game.spawns["ColonyCenter"].room).length *
 				EXTENSION_ENERGY_CAPACITY[Game.spawns["ColonyCenter"].room.controller.level] +
 				Game.spawns["ColonyCenter"].energyCapacity)
@@ -109,4 +109,4 @@ var popManage = {
 	}
 }
 
-module.exports = popManage;
+module.exports = popManager;

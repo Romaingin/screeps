@@ -1,9 +1,5 @@
 var utils = {
-	distance: function(p1, p2) {
-		return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y)
-	},
-
-	getAvailableEnergy: function(spawnName) {
+	getAvailableEnergy: function (spawnName) {
 		var spawn = Game.spawns[spawnName]
 		var availableEnergy = spawn.energy
 
@@ -17,13 +13,13 @@ var utils = {
 		return availableEnergy
 	},
 
-	getExtensions: function(room) {
+	getExtensions: function (room) {
 		return room.find(FIND_MY_STRUCTURES, {
 			filter: { structureType: STRUCTURE_EXTENSION }
 		});
 	},
 
-	getMaxHarvester: function(source) {
+	getMaxHarvester: function (source) {
 		// Get number of plains arround
 		var plainNumber = 0
 		for (var i = source.pos.x - 1; i <= source.pos.x + 1; i++) {
@@ -35,6 +31,18 @@ var utils = {
 		}
 
 		return plainNumber
+	},
+
+	findClosestSourceForRole: function (role, roomName=null) {
+		switch (role) {
+			case "harvester":
+				return Game.spawns["ColonyCenter"].pos.findClosestByRange(FIND_SOURCES)
+			case "builder":
+				return Game.spawns["ColonyCenter"].pos.findClosestByRange(FIND_SOURCES)
+			case "upgrader":
+				return Game.rooms[Game.spawns["ColonyCenter"].pos.roomName].controller.pos.findClosestByRange(FIND_SOURCES)
+			default:
+		}
 	}
 }
 
