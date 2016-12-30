@@ -1,4 +1,5 @@
-var spawner = require('spawner');
+var spawner = require('spawner')
+var colonyManager = require('colony.manager')
 var utils = require('utils')
 
 var c = { work: BODYPART_COST[WORK],
@@ -7,22 +8,17 @@ var c = { work: BODYPART_COST[WORK],
 			attack: BODYPART_COST[ATTACK],
 }
 
-// Distribution of roles
-roleCountReach = {
-	'harvester': 6,
-	'builder': 2,
-	'upgrader': 6,
-	'warrior': 6,
-}
-
 var popManager = {
-	run: function (roleCountState) {
+	run: function () {
+		// Distribution of roles
+		var roleCountReach = colonyManager.populationCountReach()
+
 		// Convert to proportions, determin the lower
 		var smallestProp = 10,
 			role = "",
 			prop
-		for (var r in roleCountState) {
-			prop = roleCountState[r] / roleCountReach[r]
+		for (var r in Memory.count) {
+			prop = Memory.count[r] / roleCountReach[r]
 			if (prop < smallestProp) {
 				smallestProp = prop
 				role = r
@@ -34,13 +30,26 @@ var popManager = {
 			var body = [MOVE]
 			var availableEnergy = utils.getAvailableEnergy("ColonyCenter") - c[MOVE]
 
-			// Decide above what energy amount it should be spawned
-			var acceptableEnergy = 0.85 *
+			// Decide above what energy amount it should be spawned TODO
+			var acceptableEnergy =
 				(utils.getExtensions(Game.spawns["ColonyCenter"].room).length *
 				EXTENSION_ENERGY_CAPACITY[Game.spawns["ColonyCenter"].room.controller.level] +
 				Game.spawns["ColonyCenter"].energyCapacity)
 
-			if (availableEnergy > acceptableEnergy) {
+			// Look for shortage among harvesters
+			var fact
+			if (Memory.count['harvester'] <= 0.5 * roleCountReach['harvester']) {
+				Memory.emergency.harvester = true
+				acceptableEnergy = 250
+
+				// TODO
+				role = "harvester"
+			} else {
+				Memory.emergency.harvester = false
+				acceptableEnergy *= 0.85
+			}
+
+			if (availableEnergy >= acceptableEnergy) {
 				switch (role) { // TODO proportions
 					case "harvester":
 						body.push(CARRY, WORK, WORK)

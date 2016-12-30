@@ -33,6 +33,17 @@ var utils = {
 		return plainNumber
 	},
 
+	isAreaClear: function (roomName, x, y, width, height) {
+		for (var i = x; i < x + width; i++) {
+			for (var j = y; j < y + height; j++) {
+				if (Game.map.getTerrainAt(i, j, roomName) == "wall") {
+					return false
+				}
+			}
+		}
+		return true
+	},
+
 	findClosestSourceForRole: function (role, roomName=null) {
 		switch (role) {
 			case "harvester":

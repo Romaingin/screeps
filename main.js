@@ -5,22 +5,26 @@ var roleWarrior = require('role.warrior')
 var spawner = require('spawner')
 var popManager = require('pop.manager')
 var roadManager = require('road.manager')
+var colonyManager = require('colony.manager')
 var utils = require('utils')
 
 if (!Memory.creepCounter) { Memory.creepCounter = 5 }
+if (!Memory.count) {Memory.count = {}}
 if (!Memory.sources) {
 	Memory.sources = {}
-
 	// Add sources to memory
 	var sources = Game.spawns["ColonyCenter"].room.find(FIND_SOURCES)
 	sources.filter(function(s) {
 		Memory.sources[s.id] = { maxHarvesterPerSource: utils.getMaxHarvester(s) }
 	})
 }
+if (!Memory.emergency) {
+	Memory.emergency = {}
+}
 
 module.exports.loop = function () {
 	var creepsNumber = 0
-	var roleCountState = {
+	Memory.count = {
 		'harvester': 0,
 		'builder': 0,
 		'upgrader': 0,
@@ -49,7 +53,7 @@ module.exports.loop = function () {
 			}
 
 			// Count the creep
-			roleCountState[creep.memory.role] += 1
+			Memory.count[creep.memory.role] += 1
 
 			creepsNumber += 1
 	    } else {
@@ -58,9 +62,12 @@ module.exports.loop = function () {
 		}
 	}
 
+	// Colony manager
+	colonyManager.run()
+
 	// Population management
-	popManager.run(roleCountState)
+	popManager.run()
 
 	// Road management
-	roadManager.run()
+	roadManager.run(Game.spawns["ColonyCenter"].pos.roomName)
 }
