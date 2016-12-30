@@ -8,6 +8,36 @@ var c = { work: BODYPART_COST[WORK],
 			attack: BODYPART_COST[ATTACK],
 }
 
+var bodyProportions = {
+	"harvester": {
+		"move": 0.3,
+		"work": 0.4,
+		"carry": 0.3,
+		"attack": 0.0
+	},
+
+	"upgrader": {
+		"move": 0.3,
+		"work": 0.5,
+		"carry": 0.2,
+		"attack": 0.0
+	},
+
+	"builder": {
+		"move": 0.3,
+		"work": 0.4,
+		"carry": 0.3,
+		"attack": 0.0
+	},
+
+	"warrior": {
+		"move": 0.4,
+		"work": 0.0,
+		"carry": 0.0,
+		"attack": 0.6
+	},
+}
+
 var popManager = {
 	run: function () {
 		// Distribution of roles
@@ -50,71 +80,28 @@ var popManager = {
 			}
 
 			if (availableEnergy >= acceptableEnergy) {
-				switch (role) { // TODO proportions
-					case "harvester":
-						body.push(CARRY, WORK, WORK)
-						availableEnergy -= 250
-
-						// Work has priority
-						while (availableEnergy >= c[WORK]) {
-							body.push(WORK)
-							availableEnergy -= c[WORK]
-						}
-						if (availableEnergy >= c[MOVE]) {
-							body.push(MOVE)
-							availableEnergy -= c[MOVE]
-						}
-						break;
-					case "upgrader":
-						body.push(CARRY, CARRY, WORK, MOVE)
-						availableEnergy -= 250
-
-						// Carry has priority
-						while (availableEnergy >= c[CARRY] + c[WORK]) {
-							body.push(CARRY, WORK)
-							availableEnergy -= c[CARRY] + c[WORK]
-						}
-						if (availableEnergy >= c[MOVE]) {
-							body.push(MOVE)
-							availableEnergy -= c[MOVE]
-						}
-						break;
-					case "builder":
-						body.push(CARRY, CARRY, WORK, MOVE)
-						availableEnergy -= 250
-
-						// Work has priority
-						while (availableEnergy >= c[WORK]) {
-							body.push(WORK)
-							availableEnergy -= c[WORK]
-						}
-						if (availableEnergy >= c[MOVE]) {
-							body.push(MOVE)
-							availableEnergy -= c[MOVE]
-						}
-						break;
-					case "warrior":
-						body.push(MOVE, ATTACK, ATTACK)
-						availableEnergy -= 210
-						// Attack has priority
-						while (availableEnergy >= c[ATTACK]) {
-							body.push(ATTACK)
-							availableEnergy -= c[ATTACK]
-						}
-						if (availableEnergy >= c[MOVE]) {
-							body.push(MOVE)
-							availableEnergy -= c[MOVE]
-						}
-						break;
-					default:
-				}
-
+				body = popManager.getBodyComposition(role, availableEnergy)
+				console.log(body, role);
 				if (spawner.spawn(role, Memory.creepCounter, body)) {
 					console.log("Is going to spawn :", role, body);
 					Memory.creepCounter += 1
 				}
 			}
 		}
+	},
+
+	getBodyComposition: function (role, availableEnergy) {
+		let body = []
+		let n
+
+		for (var type in bodyProportions[role]) {
+			// Append the type
+			n = Math.floor(bodyProportions[role][type] * availableEnergy / c[type])
+			for (var i = 0; i < n; i++) {
+				body.push(type)
+			}
+		}
+		return body
 	}
 }
 

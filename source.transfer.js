@@ -1,17 +1,17 @@
 var sourceTransfer = {
 	run: function(creep) {
 		var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: { structureType: STRUCTURE_SPAWN }
+			filter: (structure) => {
+				// Look for the extension not full
+				return (structure.structureType == STRUCTURE_EXTENSION &&
+					structure.energy < structure.energyCapacity);
+			}
 		})
 
-		// If spawn full
-		if (target.energy == target.energyCapacity) {
+		// If extensions full, go to spawn
+		if (!target.length) {
 			var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: (structure) => {
-					// Look for the extension not full
-                    return (structure.structureType == STRUCTURE_EXTENSION &&
-						structure.energy < structure.energyCapacity);
-                }
+				filter: { structureType: STRUCTURE_SPAWN }
 			})
 		}
 
@@ -26,8 +26,6 @@ var sourceTransfer = {
 			creep.moveTo(Game.flags["IdleSpot"])
 			return ERR_FULL
 		}
-
-
 	}
 }
 

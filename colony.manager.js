@@ -58,7 +58,9 @@ var colonyManager = {
 		LEVEL = 3
 		if (mainController.level == 3) { Memory.colony.level = LEVEL }
 		// Upgrade the field
-		fieldBuilder.update(mainRoom, mainRoom.memory.field)
+		if (mainRoom.memory.field.state < 2) {
+			fieldBuilder.update(mainRoom, mainRoom.memory.field)
+		}
 
 		LEVEL = 4
 		Memory.colony.level = LEVEL

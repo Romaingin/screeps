@@ -1,7 +1,7 @@
 var sourceFinder = require('source.finder')
 var sourceTransfer = require('source.transfer')
 var roleHarvester = require('role.harvester')
-
+// TODO give prority to extension
 var roleBuilder = {
 	run: function(creep) {
 		// Do its job only if no emergency among harvester
