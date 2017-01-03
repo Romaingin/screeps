@@ -14,7 +14,11 @@ if (!Memory.sources) {
 	// Add sources to memory
 	var sources = Game.spawns["ColonyCenter"].room.find(FIND_SOURCES)
 	sources.filter(function(s) {
-		Memory.sources[s.id] = { maxHarvesterPerSource: utils.getMaxHarvester(s) }
+		Memory.sources[s.id] = {
+			//maxHarvesterPerSource: utils.getMaxHarvester(s),
+			avgTimesList: [0],
+			avgTime: 0
+		}
 	})
 }
 if (!Memory.emergency) {

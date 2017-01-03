@@ -54,6 +54,17 @@ var utils = {
 				return Game.rooms[Game.spawns["ColonyCenter"].pos.roomName].controller.pos.findClosestByRange(FIND_SOURCES)
 			default:
 		}
+	},
+
+	sumArray: function (array) {
+		var sum = array.reduce(function(a, b) {
+			return a + b
+		}, 0)
+		if (sum >= 0) {
+			return sum
+		} else {
+			return 0
+		}
 	}
 }
 
