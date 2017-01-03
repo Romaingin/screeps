@@ -4,7 +4,6 @@ var roleBuilder = require('role.builder')
 var roleWarrior = require('role.warrior')
 var spawner = require('spawner')
 var popManager = require('pop.manager')
-var roadManager = require('road.manager')
 var colonyManager = require('colony.manager')
 var utils = require('utils')
 
@@ -67,7 +66,4 @@ module.exports.loop = function () {
 
 	// Population management
 	popManager.run()
-
-	// Road management
-	roadManager.run(Game.spawns["ColonyCenter"].pos.roomName)
 }

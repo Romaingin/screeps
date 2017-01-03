@@ -9,7 +9,7 @@ var sourceTransfer = {
 		})
 
 		// If extensions full, go to spawn
-		if (!target.length) {
+		if (!target) {
 			var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: { structureType: STRUCTURE_SPAWN }
 			})

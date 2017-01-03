@@ -3,10 +3,10 @@ var fieldBuilder = {
 		// The given coordinates are assumed to be good
 		room.createConstructionSite(centerX, centerY, STRUCTURE_TOWER)
 		for (var i = centerX - 1; i <= centerX + 1; i++) {
-			for (var j = centerY - 1; j <= centerY; j++) {
-				room.createConstructionSite(i, j, STRUCTURE_EXTENSION)
-			}
+			room.createConstructionSite(i, centerY - 1, STRUCTURE_EXTENSION)
 		}
+		room.createConstructionSite(centerX - 1, centerY, STRUCTURE_EXTENSION)
+		room.createConstructionSite(centerX + 1, centerY, STRUCTURE_EXTENSION)
 	},
 
 	update: function (room, field) {

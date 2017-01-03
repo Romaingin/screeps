@@ -57,8 +57,7 @@ var popManager = {
 
 		// If need be, spawn another creep with the designated role
 		if (smallestProp < 1.0) {
-			var body = [MOVE]
-			var availableEnergy = utils.getAvailableEnergy("ColonyCenter") - c[MOVE]
+			var availableEnergy = utils.getAvailableEnergy("ColonyCenter")
 
 			// Decide above what energy amount it should be spawned TODO
 			var acceptableEnergy =
@@ -70,18 +69,21 @@ var popManager = {
 			var fact
 			if (Memory.count['harvester'] <= 0.5 * roleCountReach['harvester']) {
 				Memory.emergency.harvester = true
-				acceptableEnergy = 250
+				acceptableEnergy = 300
 
 				// TODO
 				role = "harvester"
 			} else {
 				Memory.emergency.harvester = false
 				acceptableEnergy *= 0.85
+				if (acceptableEnergy < 300) {
+					acceptableEnergy = 300
+				}
 			}
 
 			if (availableEnergy >= acceptableEnergy) {
 				body = popManager.getBodyComposition(role, availableEnergy)
-				console.log(body, role);
+
 				if (spawner.spawn(role, Memory.creepCounter, body)) {
 					console.log("Is going to spawn :", role, body);
 					Memory.creepCounter += 1
@@ -93,6 +95,7 @@ var popManager = {
 	getBodyComposition: function (role, availableEnergy) {
 		let body = []
 		let n
+		let energyRemaining = availableEnergy
 
 		for (var type in bodyProportions[role]) {
 			// Append the type
@@ -100,7 +103,15 @@ var popManager = {
 			for (var i = 0; i < n; i++) {
 				body.push(type)
 			}
+			energyRemaining -= n * c[type]
 		}
+
+		// Fill the space
+		while (energyRemaining - c[MOVE] >= 0) {
+			body.push(MOVE)
+			energyRemaining -= c[MOVE]
+		}
+
 		return body
 	}
 }

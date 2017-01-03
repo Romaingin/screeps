@@ -20,9 +20,7 @@ var roadManager = {
 			Memory.roads[roomName] = {}
 		}
 
-		if (Memory.colony.basicRoadmap()) {
-			roadManager.basicRoadmap(roomName)
-		}
+		roadManager.basicRoadmap(roomName)
 	},
 
 	basicRoadmap: function (roomName) {
@@ -57,8 +55,8 @@ var roadManager = {
 		// Circle the spawn
 		if (!Memory.roads[roomName].spawnCircled) {
 			for (let s in spawns) {
-				let x = spawns[s].pos.x,
-					y = spawns[s].pos.y
+				let x = spawns[s].x,
+					y = spawns[s].y
 
 				for (var i = x-1; i <= x+1; i++) {
 					for (var j = y-1; j <= y+1; j++) {
