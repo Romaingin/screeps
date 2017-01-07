@@ -18,13 +18,28 @@ var fieldBuilder = {
 				room.createConstructionSite(field.x + 1, field.y + 3, STRUCTURE_EXTENSION)
 				room.createConstructionSite(field.x - 1, field.y - 3, STRUCTURE_EXTENSION)
 				room.createConstructionSite(field.x + 1, field.y - 3, STRUCTURE_EXTENSION)
-				for (var i = field.x - 1; i <= field.x + 1; i++) {
-					for (var j = field.y - 3; j <= field.y + 2; j++) {
-						room.createConstructionSite(i, j, STRUCTURE_ROAD)
-					}
-				}
+				// Add roads
+				room.createConstructionSite(field.x - 1, field.y - 2, STRUCTURE_ROAD)
+				room.createConstructionSite(field.x	   , field.y - 2, STRUCTURE_ROAD)
+				room.createConstructionSite(field.x + 1, field.y - 2, STRUCTURE_ROAD)
+				room.createConstructionSite(field.x - 1, field.y + 2, STRUCTURE_ROAD)
+				room.createConstructionSite(field.x	   , field.y + 2, STRUCTURE_ROAD)
+				room.createConstructionSite(field.x + 1, field.y + 2, STRUCTURE_ROAD)
+				room.createConstructionSite(field.x    , field.y + 1, STRUCTURE_ROAD)
 				field.state = 2;
-				break;
+				break
+			case 2:
+				// Add 5 more extensions
+				room.createConstructionSite(field.x    , field.y - 3, STRUCTURE_EXTENSION)
+				room.createConstructionSite(field.x    , field.y + 3, STRUCTURE_EXTENSION)
+				room.createConstructionSite(field.x + 2, field.y - 1, STRUCTURE_EXTENSION)
+				room.createConstructionSite(field.x + 2, field.y   , STRUCTURE_EXTENSION)
+				room.createConstructionSite(field.x + 2, field.y + 1, STRUCTURE_EXTENSION)
+				// Add roads
+				// room.createConstructionSite(field.x - 1, field.y - 2, STRUCTURE_ROAD)
+				// room.createConstructionSite(field.x - 1, field.y - 2, STRUCTURE_ROAD)
+				// room.createConstructionSite(field.x - 1, field.y - 2, STRUCTURE_ROAD)
+				break
 			default:
 		}
 	}

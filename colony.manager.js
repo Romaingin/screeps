@@ -61,7 +61,6 @@ var colonyManager = {
 			return
 		}
 
-
 		// > Level 3 :
 		// 		Controller at level 3.
 		//		Priority : Continue to produice H, U, B and start produicing
@@ -71,15 +70,20 @@ var colonyManager = {
 			Memory.colony.level = LEVEL
 
 			// Upgrade the field
-			if (mainRoom.memory.field.state < 2) {
-				fieldBuilder.update(mainRoom, mainRoom.memory.field)
-			}
+			fieldBuilder.update(mainRoom, mainRoom.memory.field)
 
 			return
 		}
 
 		LEVEL = 4
-		Memory.colony.level = LEVEL
+		if (mainController.level == 4 && Memory.colony.level == LEVEL-1) {
+			Memory.colony.level = LEVEL
+
+			// Upgrade the field
+			fieldBuilder.update(mainRoom, mainRoom.memory.field)
+
+			return
+		}
 
 		return
 	},

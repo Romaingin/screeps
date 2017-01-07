@@ -18,7 +18,7 @@ var sourceManager = {
 		// Send the creep to the source which minimize the time spent
 		creep.memory.targetId = minTimeSourceId
 	},
-
+	// TODO check source (simple func to update more efficiently)
 	returnedFromTarget: function (creep) {
 		// Called when a creep made it back. Used to set avg time
 		// to make the trip.

@@ -2,9 +2,10 @@ var roleHarvester = require('role.harvester')
 var roleUpgrader = require('role.upgrader')
 var roleBuilder = require('role.builder')
 var roleWarrior = require('role.warrior')
-var spawner = require('spawner')
 var popManager = require('pop.manager')
 var colonyManager = require('colony.manager')
+var defenseManager = require('defense.manager')
+var spawner = require('spawner')
 var utils = require('utils')
 
 if (!Memory.creepCounter) { Memory.creepCounter = 5 }
@@ -26,6 +27,7 @@ if (!Memory.emergency) {
 }
 
 module.exports.loop = function () {
+	// Creeps
 	var creepsNumber = 0
 	Memory.count = {
 		'harvester': 0,
@@ -34,7 +36,7 @@ module.exports.loop = function () {
 		'warrior': 0,
 	}
 
-	for(var name in Memory.creeps) {
+	for (var name in Memory.creeps) {
 	    if(Game.creeps[name]) {
 			var creep = Game.creeps[name]
 
@@ -64,6 +66,9 @@ module.exports.loop = function () {
 	        delete Memory.creeps[name];
 		}
 	}
+
+	// Defense manager
+	defenseManager.run()
 
 	// Colony manager
 	colonyManager.run()
